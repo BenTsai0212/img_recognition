@@ -7,7 +7,6 @@
            作為 predict 值 output
     TODO:
         1. 現在還沒研究出如何在 pycharm 中顯示 image, 這樣 _test() 驗證不太直觀
-        2. 應該做一個 show_label() 看看現在已經存好的 label 有哪些
 
     update: 2022/11/8
 '''
@@ -49,7 +48,7 @@ class Face_recognition:
 
         self.emb_vector = dict(zip(key_list, item_list))    # 所有人員臉的 embedding vector
 
-    def imb_init(self):
+    def emb_init(self):
         '''
             取得 image_path 下所有人員臉部的 embedding vector\n
             把結果存進 sqlite3 (./emb_vector.db)
@@ -76,8 +75,6 @@ class Face_recognition:
             for key in emb_dict.keys():
                 self.db[key] = emb_dict[key]
             self.db.commit()
-
-            self.db.close()
 
     def predict(self, path):
         '''
@@ -137,6 +134,16 @@ class Face_recognition:
 
         return distance_dict
 
+    def show_labels(self):
+        '''
+        回傳目前有在 db 內的 label list
+        :return:
+        '''
+        label_list = []
+        for label, _ in self.db.items():
+            label_list.append(label)
+        return label_list
+
     ''' 以下測試用 '''
     def _test(self):
         '''
@@ -164,11 +171,15 @@ if __name__ == '__main__':
     # face_recognition.test_mode = False
 
     #### 第一次跑或是有新增人員 (label) 時需要先 init
-    # face_recognition.imb_init()
+    # face_recognition.emb_init()
 
     #### 預測來源圖片路徑的 label
     # path = ''
     # face_recognition.predict(path)
+
+    #### 檢視目前 db 上有哪些 label
+    # label_list = face_recognition.show_labels()
+    # print(label_list)
 
     #### 測試 ./test_img 路徑裡的 image 辨識結果
     face_recognition._test()

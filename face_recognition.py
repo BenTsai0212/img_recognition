@@ -3,7 +3,7 @@
     process:
         1. 使用 FaceNet model 將 ./image 路徑下的 image 取得其 embedding_vector
         2. 將各 label 對應各 emb_vector 的 dictionary 存入 emb_vector.db (sqlite3)
-        3. 新的圖片 (路徑) input 後使用 model 取得 emb_vector, 用歐式距離計算與新的圖片最近的 label,
+        3. 新的圖片 (路徑) input 後使用 model 取得 emb_vector, 用歐氏距離計算與新的圖片最近的 label,
            作為 predict 值 output
     TODO:
         1. 現在還沒研究出如何在 pycharm 中顯示 image, 這樣 _test() 驗證不太直觀
@@ -87,7 +87,7 @@ class Face_recognition:
 
     def _img_simiarity_evaluate(self, path):
         '''
-        計算路徑下之圖片與各 label 之距離, 回傳最近似之 label\n
+        透過路徑下之圖片與各 label 之距離, 回傳最近似之 label\n
         :param path: 圖片的路徑
         :return: pred_label, min_distance, score
         '''
@@ -106,7 +106,7 @@ class Face_recognition:
 
     def _emb_distance_evaluate(self, img):
         '''
-        計算圖片與各 label 之歐式距離\n
+        計算圖片與各 label 之歐氏距離\n
         :param img: 輸入圖片
         :return: distance_dict{label : distance}
         '''
@@ -136,8 +136,8 @@ class Face_recognition:
 
     def show_labels(self):
         '''
-        回傳目前有在 db 內的 label list
-        :return:
+        回傳目前有在 db 內的 label list\n
+        :return: label_list
         '''
         label_list = []
         for label, _ in self.db.items():
@@ -145,7 +145,7 @@ class Face_recognition:
         return label_list
 
     ''' 以下測試用 '''
-    def _test(self):
+    def test(self):
         '''
             測試 ./test_img 資料夾內的 image 辨識結果\n
         :return: pred_label:預測人員 <br><br>
@@ -182,4 +182,4 @@ if __name__ == '__main__':
     # print(label_list)
 
     #### 測試 ./test_img 路徑裡的 image 辨識結果
-    face_recognition._test()
+    face_recognition.test()
